@@ -18,4 +18,5 @@ let firstNum = 0;
 let secondNum = 2;
 let operator;
 
-function operate(firstNum, secondNum, operator) {}
+let calcString;
+function operate(firstNum, secondNum, operator) { }
