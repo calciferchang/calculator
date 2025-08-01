@@ -14,20 +14,29 @@
 
 #buttonsContainer {
   display: grid;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 6;
   max-width: 16em;
   row-gap: 4px;
   column-gap: 4px;
-  grid-template-rows: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 #display {
+  grid-row: 1 / 1;
+  grid-column: 1 / 5;
+
   padding: 6px 8px;
   display: flex;
   border-radius: 2px;
   flex: 1 0 0;
   align-self: stretch;
+  border-radius: 2px;
+  border: 1px solid #000;
+
+  display: flex;
+  align-content: right;
+  justify-content: center;
 }
 
 .button {
@@ -54,16 +63,16 @@
 }
 
 .plusButton {
-  grid-row: 2 / 4;
+  grid-row: 3 / 5;
   grid-column: 4 / 4;
 }
 
 .enterButton {
-  grid-row: 4 / 6;
+  grid-row: 5 / 7;
   grid-column: 4 / 4;
 }
 
 .zeroButton {
-  grid-row: 5 / 5;
+  grid-row: 6 / 6;
   grid-column: 1 / 3;
 }

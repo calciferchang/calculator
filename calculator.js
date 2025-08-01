@@ -59,3 +59,32 @@ let calculatorState = {
   secondNumber: "",
   display: "0",
 };
+
+const calcDisplay = document.querySelector("#display")
+const displayFirstNum = document.createElement("div")
+displayFirstNum.className = 'displayNum'
+displayFirstNum.innerText = calculatorState.display;
+
+calcDisplay.appendChild(displayFirstNum);
+
+function handleInput(inputType, inputValue) {
+  switch(calculatorState.currentState) {
+    case STATES.EXPECTING_FIRST_NUMBER:
+      // What happens when we get numbers, operators, etc. in this state?
+      switch(inputType) {
+        case "DIGIT":
+          calculatorState.firstNumber = calculatorState.firstNumber + inputValue;
+          break;
+        case "OPERATOR":
+          calculatorState.currentState = EXPECTING_OPERATOR;
+          break;
+      }
+      break;
+    case STATES.EXPECTING_OPERATOR:
+      // State transitions for this state
+      break;
+    case STATES.EXPECTING_SECOND_NUMBER:
+      // State transitions for this state
+      break;
+  }
+}
