@@ -57,26 +57,48 @@ let calculatorState = {
   firstNumber: "",
   operator: null,
   secondNumber: "",
-  display: "0",
+  hasDecimal: false,
 };
 
-const calcDisplay = document.querySelector("#display")
-const displayFirstNum = document.createElement("div")
-displayFirstNum.className = 'displayNum'
-displayFirstNum.innerText = calculatorState.display;
+const calcDisplay = document.querySelector("#display");
+const displayFirstNum = document.createElement("div");
+displayFirstNum.className = "displayNum";
+displayFirstNum.innerText = "0";
 
 calcDisplay.appendChild(displayFirstNum);
 
 function handleInput(inputType, inputValue) {
-  switch(calculatorState.currentState) {
+  switch (calculatorState.currentState) {
     case STATES.EXPECTING_FIRST_NUMBER:
       // What happens when we get numbers, operators, etc. in this state?
-      switch(inputType) {
+      switch (inputType) {
         case "DIGIT":
-          calculatorState.firstNumber = calculatorState.firstNumber + inputValue;
+          calculatorState.firstNumber =
+            calculatorState.firstNumber + inputValue;
+          displayFirstNum.innerText = calculatorState.firstNumber;
           break;
+        case "DECIMAL":
+          if (calculatorState.hasDecimal === false) {
+            calculatorState.firstNumber = calculatorState.firstNumber + ".";
+            calculatorState.hasDecimal = true;
+            displayFirstNum.innerText = calculatorState.firstNumber;
+          }
+          break;
+        case "BACKSPACE":
+          const splitNum = calculatorState.firstNumber.split("");
+          splitNum.pop();
+          calculatorState.firstNumber = calculatorState.firstNumber.join("");
+          displayFirstNum.innerText = calculatorState.firstNumber;
+          break;
+
         case "OPERATOR":
-          calculatorState.currentState = EXPECTING_OPERATOR;
+          calculatorState.currentState = STATES.EXPECTING_OPERATOR;
+          calculatorState.hasDecimal = false;
+          calculatorState.operator = inputValue;
+
+          const displayOperator = document.createElement("div");
+          displayOperator.innerText = calculatorState.operator;
+          calcDisplay.appendChild(displayOperator);
           break;
       }
       break;
