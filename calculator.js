@@ -86,8 +86,16 @@ function handleInput(inputType, inputValue) {
           break;
         case "BACKSPACE":
           const splitNum = calculatorState.firstNumber.split("");
+          if (
+            calculatorState.firstNumber[
+              calculatorState.firstNumber.length - 1
+            ] === "."
+          ) {
+            calculatorState.hasDecimal = false;
+          }
           splitNum.pop();
-          calculatorState.firstNumber = calculatorState.firstNumber.join("");
+
+          calculatorState.firstNumber = splitNum.join("");
           displayFirstNum.innerText = calculatorState.firstNumber;
           break;
 
