@@ -18,14 +18,14 @@ displayFirstNum.innerText = "0";
 calcDisplay.appendChild(displayFirstNum);
 
 //defining calculator states
-const STATES = {
-  EXPECTING_FIRST_NUMBER: "expecting_first_number",
-  EXPECTING_OPERATOR: "expecting_operator",
-  EXPECTING_SECOND_NUMBER: "expecting_second_number",
+const INPUT_STATES = {
+  FIRST_NUMBER: "first_number",
+  OPERATOR: "operator",
+  SECOND_NUMBER: "second_number",
 };
 
-let calculatorState = {
-  currentState: STATES.EXPECTING_FIRST_NUMBER,
+const CALCULATOR_STATE = {
+  currentInput: INPUT_STATES.FIRST_NUMBER,
   firstNumber: "",
   operator: null,
   secondNumber: "",
@@ -83,11 +83,11 @@ function inputType(input) {
 }
 
 function clearInput() {
-  calculatorState.currentState = STATES.EXPECTING_FIRST_NUMBER;
-  calculatorState.firstNumber = "";
-  calculatorState.operator = null;
-  calculatorState.secondNumber = "";
-  calculatorState.hasDecimal = false;
+  CALCULATOR_STATE.currentInput = INPUT_STATES.FIRST_NUMBER;
+  CALCULATOR_STATE.firstNumber = "";
+  CALCULATOR_STATE.operator = null;
+  CALCULATOR_STATE.secondNumber = "";
+  CALCULATOR_STATE.hasDecimal = false;
   displayFirstNum.innerText = "0";
 }
 
@@ -95,47 +95,83 @@ function handleInput(inputType, inputValue) {
   if (inputValue === "clear") {
     clearInput();
   } else
-    switch (calculatorState.currentState) {
-      case STATES.EXPECTING_FIRST_NUMBER:
+    switch (CALCULATOR_STATE.currentInput) {
+      case INPUT_STATES.FIRST_NUMBER:
         switch (inputType) {
           case "DIGIT":
-            calculatorState.firstNumber =
-              calculatorState.firstNumber + inputValue;
-            displayFirstNum.innerText = calculatorState.firstNumber;
+            CALCULATOR_STATE.firstNumber =
+              CALCULATOR_STATE.firstNumber + inputValue;
+            displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
             break;
 
           case "DECIMAL":
-            if (calculatorState.hasDecimal === false) {
-              calculatorState.firstNumber = calculatorState.firstNumber + ".";
-              calculatorState.hasDecimal = true;
-              displayFirstNum.innerText = calculatorState.firstNumber;
+            if (CALCULATOR_STATE.hasDecimal === false) {
+              CALCULATOR_STATE.firstNumber = CALCULATOR_STATE.firstNumber + ".";
+              CALCULATOR_STATE.hasDecimal = true;
+              displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
             }
             break;
 
           case "BACKSPACE":
-            const splitNum = calculatorState.firstNumber.split("");
+            const splitNum = CALCULATOR_STATE.firstNumber.split("");
             if (splitNum[splitNum.length - 1] === ".") {
-              calculatorState.hasDecimal = false;
+              CALCULATOR_STATE.hasDecimal = false;
             }
             splitNum.pop();
 
-            calculatorState.firstNumber = splitNum.join("");
-            displayFirstNum.innerText = calculatorState.firstNumber;
+            CALCULATOR_STATE.firstNumber = splitNum.join("");
+            displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
             break;
 
           case "OPERATOR":
-            calculatorState.currentState = STATES.EXPECTING_OPERATOR;
-            calculatorState.hasDecimal = false;
-            calculatorState.operator = inputValue;
+            CALCULATOR_STATE.currentState = INPUT_STATES.OPERATOR;
+            CALCULATOR_STATE.hasDecimal = false;
+            CALCULATOR_STATE.operator = inputValue;
 
             const displayOperator = document.createElement("div");
-            displayOperator.innerText = calculatorState.operator;
+            displayOperator.innerText = CALCULATOR_STATE.operator;
             calcDisplay.appendChild(displayOperator);
             break;
         }
         break;
-      case STATES.EXPECTING_SECOND_NUMBER:
-        // State transitions for this state
+
+      case INPUT_STATES.SECOND_NUMBER:
+        switch (inputType) {
+          case "DIGIT":
+            CALCULATOR_STATE.secondNumber =
+              CALCULATOR_STATE.secondNumber + inputValue;
+            displaySecondNum.innerText = CALCULATOR_STATE.secondNumber;
+            break;
+
+          case "DECIMAL":
+            if (CALCULATOR_STATE.hasDecimal === false) {
+              CALCULATOR_STATE.firstNumber = CALCULATOR_STATE.firstNumber + ".";
+              CALCULATOR_STATE.hasDecimal = true;
+              displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
+            }
+            break;
+
+          case "BACKSPACE":
+            const splitNum = CALCULATOR_STATE.firstNumber.split("");
+            if (splitNum[splitNum.length - 1] === ".") {
+              CALCULATOR_STATE.hasDecimal = false;
+            }
+            splitNum.pop();
+
+            CALCULATOR_STATE.firstNumber = splitNum.join("");
+            displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
+            break;
+
+          case "OPERATOR":
+            CALCULATOR_STATE.currentState = STATES.EXPECTING_OPERATOR;
+            CALCULATOR_STATE.hasDecimal = false;
+            CALCULATOR_STATE.operator = inputValue;
+
+            const displayOperator = document.createElement("div");
+            displayOperator.innerText = CALCULATOR_STATE.operator;
+            calcDisplay.appendChild(displayOperator);
+            break;
+        }
         break;
     }
 }
