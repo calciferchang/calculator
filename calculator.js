@@ -44,6 +44,7 @@ function inputType(input) {
     case "=":
       return "ENTER";
     case "Escape":
+    case "clear ":
       return "CLEAR";
     case "Backspace":
       return "BACKSPACE";
@@ -70,7 +71,6 @@ calcDisplay.appendChild(displayFirstNum);
 function handleInput(inputType, inputValue) {
   switch (calculatorState.currentState) {
     case STATES.EXPECTING_FIRST_NUMBER:
-      // What happens when we get numbers, operators, etc. in this state?
       switch (inputType) {
         case "DIGIT":
           calculatorState.firstNumber =
@@ -114,3 +114,15 @@ function handleInput(inputType, inputValue) {
       break;
   }
 }
+
+// Select all buttons
+const buttons = document.querySelectorAll(".button");
+
+// Add click event listeners
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const value = button.innerText;
+    const type = inputType(value);
+    handleInput(type, value);
+  });
+});
