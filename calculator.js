@@ -12,20 +12,26 @@ buttons.forEach((button) => {
 // Display
 const calcDisplay = document.querySelector("#display");
 const displayFirstNum = document.createElement("div");
-displayFirstNum.className = "displayNum";
+const displayOperator = document.createElement("div");
+const displaySecondNum = document.createElement("div");
+// displayFirstNum.className = "displayNum";
+// displayOperator.className = "displayOperator";
+// displaySecondNum.className = "displaySecondNum";
 displayFirstNum.innerText = "0";
 
 calcDisplay.appendChild(displayFirstNum);
+calcDisplay.appendChild(displayOperator);
+calcDisplay.appendChild(displaySecondNum);
 
 //defining calculator states
-const INPUT_STATES = {
+const INPUT_STATE = {
   FIRST_NUMBER: "first_number",
   OPERATOR: "operator",
   SECOND_NUMBER: "second_number",
 };
 
 const CALCULATOR_STATE = {
-  currentInput: INPUT_STATES.FIRST_NUMBER,
+  currentInput: INPUT_STATE.FIRST_NUMBER,
   firstNumber: "",
   operator: null,
   secondNumber: "",
@@ -65,6 +71,7 @@ function inputType(input) {
     case "*":
     case "/":
     case "-":
+    case "−":
     case "+":
       return "OPERATOR";
     case ".":
@@ -83,12 +90,14 @@ function inputType(input) {
 }
 
 function clearInput() {
-  CALCULATOR_STATE.currentInput = INPUT_STATES.FIRST_NUMBER;
+  CALCULATOR_STATE.currentInput = INPUT_STATE.FIRST_NUMBER;
   CALCULATOR_STATE.firstNumber = "";
   CALCULATOR_STATE.operator = null;
   CALCULATOR_STATE.secondNumber = "";
   CALCULATOR_STATE.hasDecimal = false;
   displayFirstNum.innerText = "0";
+  displayOperator.innerText = "";
+  displaySecondNum.innerText = "";
 }
 
 function handleInput(inputType, inputValue) {
@@ -96,7 +105,7 @@ function handleInput(inputType, inputValue) {
     clearInput();
   } else
     switch (CALCULATOR_STATE.currentInput) {
-      case INPUT_STATES.FIRST_NUMBER:
+      case INPUT_STATE.FIRST_NUMBER:
         switch (inputType) {
           case "DIGIT":
             CALCULATOR_STATE.firstNumber =
@@ -105,7 +114,10 @@ function handleInput(inputType, inputValue) {
             break;
 
           case "DECIMAL":
-            if (CALCULATOR_STATE.hasDecimal === false) {
+            if (CALCULATOR_STATE.firstNumber === "") {
+              CALCULATOR_STATE.firstNumber = "0.";
+              displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
+            } else if (CALCULATOR_STATE.hasDecimal === false) {
               CALCULATOR_STATE.firstNumber = CALCULATOR_STATE.firstNumber + ".";
               CALCULATOR_STATE.hasDecimal = true;
               displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
@@ -124,18 +136,33 @@ function handleInput(inputType, inputValue) {
             break;
 
           case "OPERATOR":
-            CALCULATOR_STATE.currentState = INPUT_STATES.OPERATOR;
+            if (CALCULATOR_STATE.firstNumber === "") {
+              CALCULATOR_STATE.firstNumber = 0;
+            }
+            CALCULATOR_STATE.currentInput = INPUT_STATE.OPERATOR;
             CALCULATOR_STATE.hasDecimal = false;
             CALCULATOR_STATE.operator = inputValue;
-
-            const displayOperator = document.createElement("div");
             displayOperator.innerText = CALCULATOR_STATE.operator;
-            calcDisplay.appendChild(displayOperator);
             break;
         }
         break;
 
-      case INPUT_STATES.SECOND_NUMBER:
+      case INPUT_STATE.OPERATOR:
+        switch (inputType) {
+          case "OPERATOR":
+            CALCULATOR_STATE.operator = inputValue;
+            displayOperator.innerText = CALCULATOR_STATE.operator;
+            break;
+          case "DECIMAL":
+            CALCULATOR_STATE.currentInput = INPUT_STATE.SECOND_NUMBER;
+            CALCULATOR_STATE.hasDecimal = true;
+            CALCULATOR_STATE.secondNumber = "0.";
+            displaySecondNum.innerText = CALCULATOR_STATE.secondNumber;
+            break;
+        }
+        break;
+
+      case INPUT_STATE.SECOND_NUMBER:
         switch (inputType) {
           case "DIGIT":
             CALCULATOR_STATE.secondNumber =
@@ -145,31 +172,25 @@ function handleInput(inputType, inputValue) {
 
           case "DECIMAL":
             if (CALCULATOR_STATE.hasDecimal === false) {
-              CALCULATOR_STATE.firstNumber = CALCULATOR_STATE.firstNumber + ".";
+              CALCULATOR_STATE.secondNumber =
+                CALCULATOR_STATE.secondNumber + ".";
               CALCULATOR_STATE.hasDecimal = true;
-              displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
+              displayFirstNum.innerText = CALCULATOR_STATE.secondNumber;
             }
             break;
 
           case "BACKSPACE":
-            const splitNum = CALCULATOR_STATE.firstNumber.split("");
+            const splitNum = CALCULATOR_STATE.secondNumber.split("");
             if (splitNum[splitNum.length - 1] === ".") {
               CALCULATOR_STATE.hasDecimal = false;
             }
             splitNum.pop();
 
-            CALCULATOR_STATE.firstNumber = splitNum.join("");
-            displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
+            CALCULATOR_STATE.secondNumber = splitNum.join("");
+            displayFirstNum.innerText = CALCULATOR_STATE.secondNumber;
             break;
 
           case "OPERATOR":
-            CALCULATOR_STATE.currentState = STATES.EXPECTING_OPERATOR;
-            CALCULATOR_STATE.hasDecimal = false;
-            CALCULATOR_STATE.operator = inputValue;
-
-            const displayOperator = document.createElement("div");
-            displayOperator.innerText = CALCULATOR_STATE.operator;
-            calcDisplay.appendChild(displayOperator);
             break;
         }
         break;
