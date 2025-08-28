@@ -6,7 +6,6 @@ const OPERATORDisplay = document.querySelector("#operator");
 
 function handleInput(input) {
   if (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(input)) {
-    console.log(input);
     return addDigit(input);
   }
   if (["-", "/", "*", "+"].includes(input)) {
@@ -56,7 +55,6 @@ let operator = "";
 //calculator functions
 function addDigit(input) {
   if (input === "0" && !currentInput.value) {
-    console.log("no 0 at start");
     return;
   }
   currentInput.value += input;
@@ -64,7 +62,6 @@ function addDigit(input) {
 }
 
 function addDecimal() {
-  //if hasDecimal true, do not run
   if (currentInput.hasDecimal) {
     return;
   }
@@ -114,7 +111,6 @@ function runCalculator() {
     NUM1Display.innerText = firstNumber;
     return;
   }
-
   secondNumber = parseFloat(NUM2.value);
   switch (operator) {
     case "+":
