@@ -107,11 +107,30 @@ function clearInputs() {
 }
 
 function runCalculator() {
-  //look at operator
-  //choose which function to put numbers in based off operator
-  //put result into NUM1, reset operator and NUM2
-  //set current input to NUM1
+  firstNumber = parseFloat(NUM1.value);
+  secondNumber = parseFloat(NUM2.value);
+  switch (operator) {
+    case "+":
+      result = firstNumber + secondNumber;
+      break;
+    case "-":
+      result = firstNumber - secondNumber;
+      break;
+    case "*":
+      result = firstNumber * secondNumber;
+      break;
+    case "/":
+      result = firstNumber / secondNumber;
+      break;
+    default:
+      console.log("Invalid operator");
+      result = 0;
+      break;
+  }
+  clearInputs();
+  NUM1Display.innerText = result;
 }
+
 // First run
 let currentInput = NUM1;
 NUM1Display.innerText = "0";
