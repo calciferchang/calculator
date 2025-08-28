@@ -36,9 +36,9 @@ buttons.forEach((button) => {
 
 function updateDisplay(input) {
   if (currentInput === NUM1) {
-    NUM1Display.innerText += input;
+    NUM1Display.innerText = NUM1.value;
   } else if (currentInput === NUM2) {
-    NUM2Display.innerText += input;
+    NUM2Display.innerText = NUM2.value;
   }
 }
 
@@ -86,7 +86,7 @@ function useOperator(input) {
     NUM1.value = 0;
   }
   operator = input;
-  OPERATORDisplay.innerHTML = operator;
+  OPERATORDisplay.innerText = operator;
   currentInput = NUM2;
 }
 
@@ -107,3 +107,4 @@ function runCalculator() {
 }
 // First run
 let currentInput = NUM1;
+NUM1Display.innerText = "0";
