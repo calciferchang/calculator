@@ -56,10 +56,11 @@ function addDecimal() {
   }
   if (!currentInput.value) {
     currentInput.hasDecimal = true;
-    return (currentInput.value = "0.");
+    currentInput.value = "0.";
+  } else {
+    currentInput.value = currentInput.value + ".";
+    currentInput.hasDecimal = true;
   }
-  currentInput.value = currentInput.value + ".";
-  currentInput.hasDecimal = true;
 }
 function useOperator() {
   if (NUM2.value) {
