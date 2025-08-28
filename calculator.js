@@ -12,38 +12,25 @@ buttons.forEach((button) => {
 });
 
 function handleInput(input) {
-  switch (input) {
-    case "0":
-    case "1":
-    case "2":
-    case "3":
-    case "4":
-    case "5":
-    case "6":
-    case "7":
-    case "8":
-    case "9":
-      return addDigitTo(currentInput);
-    case "*":
-    case "/":
-    case "-":
-    case "+":
-      return addOperatorTo(currentInput);
-    case ".":
-      return addDecimalTo(currentInput);
-    case "Enter":
-    case "=":
-      return runCalculator();
-    case "Escape":
-    case "clear ":
-      return clearCalculator();
-    case "Backspace":
-      return backspaceInput(currentInput);
-    default:
-      return console.log("walrus sucks");
+  if (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(input)) {
+    return addDigit(input);
+  }
+  if (["-", "/", "*", "+"].includes(input)) {
+    return useOperator(input);
+  }
+  if (input === ".") {
+    return addDecimal();
+  }
+  if (input === "Enter") {
+    return runCalculator();
+  }
+  if (input === "clear") {
+    return clearInputs();
   }
 }
 
+function clearInputs() {}
+function addDigit() {}
 // calculator constants
 const NUM1 = {
   value: "",
