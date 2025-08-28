@@ -105,13 +105,13 @@ function clearInputs() {
 }
 
 function runCalculator() {
-  firstNumber = parseFloat(NUM1.value);
+  const firstNumber = parseFloat(NUM1.value);
   if (!NUM2.value) {
     clearInputs();
     NUM1Display.innerText = firstNumber;
     return;
   }
-  secondNumber = parseFloat(NUM2.value);
+  const secondNumber = parseFloat(NUM2.value);
   switch (operator) {
     case "+":
       result = firstNumber + secondNumber;
@@ -131,7 +131,7 @@ function runCalculator() {
       break;
   }
   clearInputs();
-  NUM1Display.innerText = result;
+  NUM1Display.innerText = parseFloat(result.toFixed(2));
 }
 
 // First run
