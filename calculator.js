@@ -15,7 +15,7 @@ function handleInput(input) {
   if (input === ".") {
     return addDecimal();
   }
-  if (input === "Enter") {
+  if (input.toLowerCase() === "enter") {
     return runCalculator();
   }
   if (input === "clear") {
