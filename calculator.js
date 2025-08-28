@@ -1,198 +1,139 @@
-// Button functions
+// Recognize inputs & what to do with them
 const buttons = document.querySelectorAll(".button");
+const NUM1Display = document.querySelector("#num1");
+const NUM2Display = document.querySelector("#num2");
+const OPERATORDisplay = document.querySelector("#operator");
+
+function handleInput(input) {
+  if (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(input)) {
+    return addDigit(input);
+  }
+  if (["-", "/", "*", "+"].includes(input)) {
+    return useOperator(input);
+  }
+  if (input === ".") {
+    return addDecimal();
+  }
+  if (input.toLowerCase() === "enter") {
+    return runCalculator();
+  }
+  if (input === "clear") {
+    return clearInputs();
+  }
+}
+
+document.addEventListener("keydown", (event) => {
+  handleInput(event.key);
+});
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     const value = button.innerText;
-    const type = inputType(value);
-    handleInput(type, value);
+    handleInput(value);
   });
 });
 
-// Display
-const calcDisplay = document.querySelector("#display");
-const displayFirstNum = document.createElement("div");
-const displayOperator = document.createElement("div");
-const displaySecondNum = document.createElement("div");
-// displayFirstNum.className = "displayNum";
-// displayOperator.className = "displayOperator";
-// displaySecondNum.className = "displaySecondNum";
-displayFirstNum.innerText = "0";
-
-calcDisplay.appendChild(displayFirstNum);
-calcDisplay.appendChild(displayOperator);
-calcDisplay.appendChild(displaySecondNum);
-
-//defining calculator states
-const INPUT_STATE = {
-  FIRST_NUMBER: "first_number",
-  OPERATOR: "operator",
-  SECOND_NUMBER: "second_number",
-};
-
-const CALCULATOR_STATE = {
-  currentInput: INPUT_STATE.FIRST_NUMBER,
-  firstNumber: "",
-  operator: null,
-  secondNumber: "",
-  hasDecimal: false,
-};
-
-// functions for operations
-function add(a, b) {
-  return a + b;
-}
-
-function subtract(a, b) {
-  return a - b;
-}
-
-function multiply(a, b) {
-  return a * b;
-}
-
-function divide(a, b) {
-  return a / b;
-}
-
-function inputType(input) {
-  switch (input) {
-    case "0":
-    case "1":
-    case "2":
-    case "3":
-    case "4":
-    case "5":
-    case "6":
-    case "7":
-    case "8":
-    case "9":
-      return "DIGIT";
-    case "*":
-    case "/":
-    case "-":
-    case "−":
-    case "+":
-      return "OPERATOR";
-    case ".":
-      return "DECIMAL";
-    case "Enter":
-    case "=":
-      return "ENTER";
-    case "Escape":
-    case "clear":
-      return "CLEAR";
-    case "Backspace":
-      return "BACKSPACE";
-    default:
-      return "walrus sucks";
+function updateDisplay(input) {
+  if (currentInput === NUM1) {
+    NUM1Display.innerText = NUM1.value;
+  } else if (currentInput === NUM2) {
+    NUM2Display.innerText = NUM2.value;
   }
 }
 
-function clearInput() {
-  CALCULATOR_STATE.currentInput = INPUT_STATE.FIRST_NUMBER;
-  CALCULATOR_STATE.firstNumber = "";
-  CALCULATOR_STATE.operator = null;
-  CALCULATOR_STATE.secondNumber = "";
-  CALCULATOR_STATE.hasDecimal = false;
-  displayFirstNum.innerText = "0";
-  displayOperator.innerText = "";
-  displaySecondNum.innerText = "";
+// Declare the calculator constants
+const NUM1 = {
+  value: "",
+  hasDecimal: false,
+};
+const NUM2 = {
+  value: "",
+  hasDecimal: false,
+};
+let operator = "";
+
+//calculator functions
+function addDigit(input) {
+  if (input === "0" && !currentInput.value) {
+    return;
+  }
+  currentInput.value += input;
+  updateDisplay(input);
 }
 
-function handleInput(inputType, inputValue) {
-  if (inputValue === "clear") {
-    clearInput();
-  } else
-    switch (CALCULATOR_STATE.currentInput) {
-      case INPUT_STATE.FIRST_NUMBER:
-        switch (inputType) {
-          case "DIGIT":
-            CALCULATOR_STATE.firstNumber =
-              CALCULATOR_STATE.firstNumber + inputValue;
-            displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
-            break;
-
-          case "DECIMAL":
-            if (CALCULATOR_STATE.firstNumber === "") {
-              CALCULATOR_STATE.firstNumber = "0.";
-              displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
-            } else if (CALCULATOR_STATE.hasDecimal === false) {
-              CALCULATOR_STATE.firstNumber = CALCULATOR_STATE.firstNumber + ".";
-              CALCULATOR_STATE.hasDecimal = true;
-              displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
-            }
-            break;
-
-          case "BACKSPACE":
-            const splitNum = CALCULATOR_STATE.firstNumber.split("");
-            if (splitNum[splitNum.length - 1] === ".") {
-              CALCULATOR_STATE.hasDecimal = false;
-            }
-            splitNum.pop();
-
-            CALCULATOR_STATE.firstNumber = splitNum.join("");
-            displayFirstNum.innerText = CALCULATOR_STATE.firstNumber;
-            break;
-
-          case "OPERATOR":
-            if (CALCULATOR_STATE.firstNumber === "") {
-              CALCULATOR_STATE.firstNumber = 0;
-            }
-            CALCULATOR_STATE.currentInput = INPUT_STATE.OPERATOR;
-            CALCULATOR_STATE.hasDecimal = false;
-            CALCULATOR_STATE.operator = inputValue;
-            displayOperator.innerText = CALCULATOR_STATE.operator;
-            break;
-        }
-        break;
-
-      case INPUT_STATE.OPERATOR:
-        switch (inputType) {
-          case "OPERATOR":
-            CALCULATOR_STATE.operator = inputValue;
-            displayOperator.innerText = CALCULATOR_STATE.operator;
-            break;
-          case "DECIMAL":
-            CALCULATOR_STATE.currentInput = INPUT_STATE.SECOND_NUMBER;
-            CALCULATOR_STATE.hasDecimal = true;
-            CALCULATOR_STATE.secondNumber = "0.";
-            displaySecondNum.innerText = CALCULATOR_STATE.secondNumber;
-            break;
-        }
-        break;
-
-      case INPUT_STATE.SECOND_NUMBER:
-        switch (inputType) {
-          case "DIGIT":
-            CALCULATOR_STATE.secondNumber =
-              CALCULATOR_STATE.secondNumber + inputValue;
-            displaySecondNum.innerText = CALCULATOR_STATE.secondNumber;
-            break;
-
-          case "DECIMAL":
-            if (CALCULATOR_STATE.hasDecimal === false) {
-              CALCULATOR_STATE.secondNumber =
-                CALCULATOR_STATE.secondNumber + ".";
-              CALCULATOR_STATE.hasDecimal = true;
-              displayFirstNum.innerText = CALCULATOR_STATE.secondNumber;
-            }
-            break;
-
-          case "BACKSPACE":
-            const splitNum = CALCULATOR_STATE.secondNumber.split("");
-            if (splitNum[splitNum.length - 1] === ".") {
-              CALCULATOR_STATE.hasDecimal = false;
-            }
-            splitNum.pop();
-
-            CALCULATOR_STATE.secondNumber = splitNum.join("");
-            displayFirstNum.innerText = CALCULATOR_STATE.secondNumber;
-            break;
-
-          case "OPERATOR":
-            break;
-        }
-        break;
-    }
+function addDecimal() {
+  if (currentInput.hasDecimal) {
+    return;
+  }
+  if (!currentInput.value) {
+    currentInput.hasDecimal = true;
+    currentInput.value = "0.";
+    updateDisplay(currentInput.value);
+  } else {
+    currentInput.value += ".";
+    currentInput.hasDecimal = true;
+    updateDisplay(currentInput.value);
+  }
 }
+
+function useOperator(input) {
+  if (NUM1.value[NUM1.value.length - 1] === ".") {
+    NUM1.value = NUM1.value.slice(0, -1);
+    NUM1Display.innerText = NUM1.value;
+  }
+  if (NUM2.value) {
+    runCalculator();
+    NUM1.value = NUM1Display.innerText;
+  } else if (!NUM1.value) {
+    NUM1.value = NUM1Display.innerHTML;
+  }
+  operator = input;
+  OPERATORDisplay.innerText = operator;
+  currentInput = NUM2;
+}
+
+function clearInputs() {
+  NUM1.value = "";
+  NUM2.value = "";
+  NUM1.hasDecimal = false;
+  NUM2.hasDecimal = false;
+  operator = "";
+  currentInput = NUM1;
+  NUM1Display.innerText = "0";
+  NUM2Display.innerText = "";
+  OPERATORDisplay.innerText = "";
+}
+
+function runCalculator() {
+  const firstNumber = parseFloat(NUM1.value);
+  if (!NUM2.value) {
+    clearInputs();
+    NUM1Display.innerText = firstNumber;
+    return;
+  }
+  const secondNumber = parseFloat(NUM2.value);
+  switch (operator) {
+    case "+":
+      result = firstNumber + secondNumber;
+      break;
+    case "-":
+      result = firstNumber - secondNumber;
+      break;
+    case "*":
+      result = firstNumber * secondNumber;
+      break;
+    case "/":
+      result = firstNumber / secondNumber;
+      break;
+    default:
+      console.log("Invalid operator");
+      result = 0;
+      break;
+  }
+  clearInputs();
+  NUM1Display.innerText = parseFloat(result.toFixed(2));
+}
+
+// First run
+let currentInput = NUM1;
+NUM1Display.innerText = "0";

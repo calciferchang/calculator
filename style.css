@@ -29,19 +29,31 @@
   padding: 6px 8px;
   display: flex;
   border-radius: 2px;
-  flex: 1 0 0;
-  align-self: stretch;
   border-radius: 2px;
   border: 1px solid #000;
+  align-items: center;
+  justify-content: end;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 2rem;
+  opacity: 60%;
+}
 
-  display: flex;
-  align-content: right;
-  justify-content: center;
+#display > * {
+  width: auto;
+  height: auto;
+  flex: 0 0 auto;
 }
 
 .button {
-  font-family: "Univers", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
+  font-family:
+    "Univers",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
   font-size: 1.1em;
   display: flex;
   padding: 6px 8px;
@@ -57,9 +69,7 @@
 
 .button:hover {
   opacity: 0.8;
-  /* Slightly fade on hover */
   transform: translateY(-1px);
-  /* Subtle lift effect */
 }
 
 .plusButton {
