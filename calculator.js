@@ -80,6 +80,9 @@ function addDecimal() {
 }
 
 function useOperator(input) {
+  if (NUM1.value[NUM1.value.length - 1] === ".") {
+    NUM1.value = NUM1.value.slice(0, -1);
+  }
   if (NUM2.value) {
     runCalculator();
   } else if (!NUM1.value) {
