@@ -97,6 +97,9 @@ function clearInputs() {
   NUM2.hasDecimal = false;
   operator = "";
   currentInput = NUM1;
+  NUM1Display.innerText = "0";
+  NUM2Display.innerText = "";
+  OPERATORDisplay.innerText = "";
 }
 
 function runCalculator() {
