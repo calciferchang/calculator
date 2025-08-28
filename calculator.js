@@ -1,5 +1,8 @@
 // Recognize inputs & what to do with them
 const buttons = document.querySelectorAll(".button");
+const NUM1Display = document.querySelector("#num1");
+const NUM2Display = document.querySelector("#num2");
+const OPERATORDisplay = document.querySelector("#operator");
 
 function handleInput(input) {
   if (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(input)) {
@@ -32,11 +35,10 @@ buttons.forEach((button) => {
 });
 
 function updateDisplay(input) {
-  switch (currentInput) {
-    case currentInput === NUM1:
-      break;
-    case currentInput === NUM2:
-      break;
+  if (currentInput === NUM1) {
+    NUM1Display.innerText += input;
+  } else if (currentInput === NUM2) {
+    NUM2Display.innerText += input;
   }
 }
 
@@ -57,7 +59,8 @@ function addDigit(input) {
     console.log("no 0 at start");
     return;
   }
-  currentInput.value = currentInput.value + input;
+  currentInput.value += input;
+  updateDisplay(input);
 }
 
 function addDecimal() {
@@ -68,9 +71,11 @@ function addDecimal() {
   if (!currentInput.value) {
     currentInput.hasDecimal = true;
     currentInput.value = "0.";
+    updateDisplay(currentInput.value);
   } else {
-    currentInput.value = currentInput.value + ".";
+    currentInput.value += ".";
     currentInput.hasDecimal = true;
+    updateDisplay(currentInput.value);
   }
 }
 
@@ -81,6 +86,7 @@ function useOperator(input) {
     NUM1.value = 0;
   }
   operator = input;
+  OPERATORDisplay.innerHTML = operator;
   currentInput = NUM2;
 }
 
