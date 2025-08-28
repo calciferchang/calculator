@@ -82,6 +82,7 @@ function addDecimal() {
 function useOperator(input) {
   if (NUM1.value[NUM1.value.length - 1] === ".") {
     NUM1.value = NUM1.value.slice(0, -1);
+    NUM1Display.innerText = NUM1.value;
   }
   if (NUM2.value) {
     runCalculator();
