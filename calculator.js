@@ -1,15 +1,5 @@
 // Recognize inputs & what to do with them
-document.addEventListener("keydown", (event) => {
-  handleInput(event.key);
-});
-
 const buttons = document.querySelectorAll(".button");
-buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const value = button.innerText;
-    handleInput(value);
-  });
-});
 
 function handleInput(input) {
   if (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(input)) {
@@ -27,6 +17,26 @@ function handleInput(input) {
   }
   if (input === "clear") {
     return clearInputs();
+  }
+}
+
+document.addEventListener("keydown", (event) => {
+  handleInput(event.key);
+});
+
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const value = button.innerText;
+    handleInput(value);
+  });
+});
+
+function updateDisplay(input) {
+  switch (currentInput) {
+    case currentInput === NUM1:
+      break;
+    case currentInput === NUM2:
+      break;
   }
 }
 
