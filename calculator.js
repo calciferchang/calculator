@@ -86,6 +86,7 @@ function useOperator(input) {
   }
   if (NUM2.value) {
     runCalculator();
+    NUM1.value = NUM1Display.innerText;
   } else if (!NUM1.value) {
     NUM1.value = 0;
   }
