@@ -62,18 +62,24 @@ function addDecimal() {
     currentInput.hasDecimal = true;
   }
 }
-function useOperator() {
+
+function useOperator(input) {
   if (NUM2.value) {
     runCalculator();
+  } else if (!NUM1.value) {
+    NUM1.value = 0;
   }
-  //set operator
-  //set currentinput to num2
+  operator = input;
+  currentInput = NUM2;
 }
+
 function clearInputs() {
-  //reset NUM1
-  //reset NUM2
-  //reset operator
-  //set currentinput to NUM1
+  NUM1.value = "";
+  NUM2.value = "";
+  NUM1.hasDecimal = false;
+  NUM2.hasDecimal = false;
+  operator = "";
+  currentInput = NUM1;
 }
 
 function runCalculator() {
