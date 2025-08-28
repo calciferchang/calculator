@@ -109,6 +109,12 @@ function clearInputs() {
 
 function runCalculator() {
   firstNumber = parseFloat(NUM1.value);
+  if (!NUM2.value) {
+    clearInputs();
+    NUM1Display.innerText = firstNumber;
+    return;
+  }
+
   secondNumber = parseFloat(NUM2.value);
   switch (operator) {
     case "+":
