@@ -56,7 +56,8 @@ function addDigit(input) {
   if (input === "0" && !currentInput.value) {
     console.log("no 0 at start");
     return;
-  } else currentInput.value = currentInput.value + input;
+  }
+  currentInput.value = currentInput.value + input;
 }
 
 function addDecimal() {
