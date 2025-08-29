@@ -105,6 +105,10 @@ function clearInputs() {
 }
 
 function runCalculator() {
+  if (!NUM1.value) {
+    NUM1.value = NUM1Display.innerText;
+  }
+
   const firstNumber = parseFloat(NUM1.value);
   if (!NUM2.value) {
     clearInputs();
